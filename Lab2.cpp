@@ -25,8 +25,15 @@ public:
     table_users() {}
     table_users(string f) : file_r(f) {}
     void outTable();
-    vector<users>& readfile();
+    void out(vector<users>& people);
+    vector<users> readfile();
 };
+
+void table_users::out(vector<users>& people){
+    for (const auto& p : people) {
+        cout << p.name << endl;
+    }
+}
 
 void table_users::outTable() {
     vector<users> list;
@@ -66,7 +73,7 @@ void table_users::outTable() {
     }
 }
 
-vector<users>& table_users::readfile() {
+vector<users> table_users::readfile() {
     vector<users> list;
 
     ifstream file(file_r);
@@ -74,10 +81,8 @@ vector<users>& table_users::readfile() {
         cout << "Не удалось открыть файл." << endl;
     else {
         string line;
+        string line1, line2, line3, line4;
         while (std::getline(file, line)) {
-            //cout << line << endl;
-
-            string line1, line2, line3, line4;
             int i = 0;
             char delimiter = ' ';
             size_t start = 0;
@@ -89,16 +94,13 @@ vector<users>& table_users::readfile() {
                     line2 = line.substr(start, end - start);
                 else if (i == 2)
                     line3 = line.substr(start, end - start);
-                //std::cout << line.substr(start, end - start) << std::endl;
                 start = end + 1;
                 end = line.find(delimiter, start);
                 i++;
             }
             line4 = line.substr(start);
-            //std::cout << line.substr(start) << std::endl; // Последняя часть
             
             list.push_back(users(line1, stoi(line2), stoi(line3), stoi(line4)));
-            
         }
     }
     file.close();
@@ -107,7 +109,11 @@ vector<users>& table_users::readfile() {
 
 int main()
 {
+    vector<users> list;
     table_users n("tableUsers.txt");
-    n.outTable();
+    //n.outTable();
+    list=n.readfile();
+    n.out(list);
+
 }
 
