@@ -1,0 +1,32 @@
+# Файлы и папки Visual Studio
+.vs/
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.sln
+
+# Файлы сборки и временные файлы
+build/
+Debug/
+Release/
+x64/
+x86/
+*.exe
+*.ilk
+*.pdb
+*.obj
+*.log
+*.idb
+*.pch
+
+# Файлы CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+CMakeLists.txt.user
+
+# Другие
+*.swp
+*.swo
+.DS_Store
