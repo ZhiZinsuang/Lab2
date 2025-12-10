@@ -6,30 +6,30 @@
 
 using namespace std;
 
-class names {
+class users {
 public:
     string name;
     int win;
     int lose;
     int allplays;
 public:
-    names() : name("player"), win(0), lose(0), allplays(0) {}
-    names(string name, int win, int lose, int allp) : name(name), win(win), lose(lose), allplays(allp) {}
-    ~names() {}
+    users() : name("player"), win(0), lose(0), allplays(0) {}
+    users(string name, int win, int lose, int allp) : name(name), win(win), lose(lose), allplays(allp) {}
+    ~users() {}
 };
 
-class table_names {
+class table_users {
 public:
     string file_r;
 public:
-    table_names() {}
-    table_names(string f) : file_r(f) {}
+    table_users() {}
+    table_users(string f) : file_r(f) {}
     void outTable();
-    vector<names>& readfile();
+    vector<users>& readfile();
 };
 
-void table_names::outTable() {
-    vector<names> list;
+void table_users::outTable() {
+    vector<users> list;
 
     ifstream file(file_r);
     if (!file.is_open())
@@ -55,7 +55,7 @@ void table_names::outTable() {
             }
             line4 = line.substr(start);
 
-            list.push_back(names(line1, stoi(line2), stoi(line3), stoi(line4)));
+            list.push_back(users(line1, stoi(line2), stoi(line3), stoi(line4)));
         }
     }
     file.close();
@@ -66,8 +66,8 @@ void table_names::outTable() {
     }
 }
 
-vector<names>& table_names::readfile() {
-    vector<names> list;
+vector<users>& table_users::readfile() {
+    vector<users> list;
 
     ifstream file(file_r);
     if (!file.is_open()) 
@@ -97,7 +97,7 @@ vector<names>& table_names::readfile() {
             line4 = line.substr(start);
             //std::cout << line.substr(start) << std::endl; // Последняя часть
             
-            list.push_back(names(line1, stoi(line2), stoi(line3), stoi(line4)));
+            list.push_back(users(line1, stoi(line2), stoi(line3), stoi(line4)));
             
         }
     }
@@ -107,7 +107,7 @@ vector<names>& table_names::readfile() {
 
 int main()
 {
-    table_names n("tableNames.txt");
+    table_users n("tableUsers.txt");
     n.outTable();
 }
 
