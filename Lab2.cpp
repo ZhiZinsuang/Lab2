@@ -9,7 +9,6 @@
 
 using namespace std;
 
-
 //выводит данные из массива в консоль
 void table_users::out(){
     //readfile();
@@ -56,7 +55,7 @@ void table_users::readfile() {
 //проверяет, есть ли в файле такое имя
 bool table_users::duplicateName(string name) {
     if (users.empty())
-        readfile();
+        readfile();                                     //а надо ли?
     int i = 0, flag = 1;
     for (user u : users) {
         if (name == users[i].getName())
@@ -96,10 +95,12 @@ void table_users::newUser(string name) {
     }
 }
 
+//возвращает кол-во пользователей
 int table_users::countUsers() {
     return static_cast<int>(users.size());
 }
 
+//переписывает в файл все данные из массива
 void table_users::rewrightFile() {
     ofstream out;
     out.open(file_r);
@@ -115,6 +116,12 @@ void table_users::rewrightFile() {
     out.close();
 }
 
+//возвращает пользователя с определённым индексом
+user table_users::getUser(int id) {
+    // можно исключение кинуть на несуществующего пользователя
+    return users[id - 1];
+}
+
 int main()
 {
     setlocale(LC_ALL, "Russian");
@@ -123,8 +130,10 @@ int main()
 
     table_users n("tableUsers.txt");
 
-    n.newUser("hello");
+    n.newUser("lo");
     n.out();
-    n.rewrightFile();
+    user u = n.getUser(2);
+    cout << u.getName() << endl;
+
 }
 

@@ -41,12 +41,13 @@ public:
     ~table_users() {
         rewrightFile();
     }
-    void out();     //������� ������ �� ������� � �������
-    void readfile();    //��������� ���� � ������ vector<users>
-    void newUser(string name);      //��������� � ������ ������ ������������
-    bool duplicateName(string name);     //���������, ������ �� ��� ����� ������������
-    int countUsers();       //������� ���-�� ������������� � �������
-    void rewrightFile();
+    void out();     //вывод из массива в консоль
+    void readfile();    //чтение данных из файла в vector<users>
+    void newUser(string name);      //записывает нового пользователя в массив
+    bool duplicateName(string name);     //проверяет, есть ли уже пользователь с таким именем
+    int countUsers();       //возвращает кол-во пользователей в массиве
+    void rewrightFile();    //переписывает в файл все данные из массива
+    user getUser(int id);   //возвращает пользователя с определённым индексом
 };
 
 #endif 
