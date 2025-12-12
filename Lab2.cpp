@@ -35,7 +35,8 @@ public:
     void out();     //выводит данные 
     void readfile();    //считывает файл в массив vector<users>
     void newUser(string name);      //добавляет в файл нового пользователя
-    int duplicateName(string name);     //проверяет, создан ли уже такой пользователь
+    bool duplicateName(string name);     //проверяет, создан ли уже такой пользователь
+
 };
 
 //выводит данные
@@ -80,25 +81,24 @@ void table_users::readfile() {
 }
 
 //проверяет, есть ли в файле такое имя
-//возвращает 0, если имя есть
-//возвращает 1, если имени нет
-int table_users::duplicateName(string name) {
+
+bool table_users::duplicateName(string name) {
     if (users.empty())
         readfile();
     int i = 0, flag = 1;
     for (user u : users) {
         if (name == users[i].getName())
-            flag = 0;
+            return true;
         i++;
     }
     users.clear();  //очищаем оперативную память от массива воизбежание ошибок
-    return flag;
+    return false;
 }
 
 //добавляет в файл нового пользователя
 void table_users::newUser(string name) {
     //проверка на повторность имени
-    if (!duplicateName(name))
+    if (duplicateName(name))
         cout << "Такой пользователь уже есть" << endl;
     else {
         ofstream out;
