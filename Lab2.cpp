@@ -5,50 +5,10 @@
 #include <string>
 #include <Windows.h>
 
+#include "Lab2.h"
+
 using namespace std;
 
-class user {
-private:
-    int id;
-    string name;
-    int win;
-    int lose;
-    int allplays;
-public:
-    user() : id(0), name("player"), win(0), lose(0), allplays(0) {}
-    //user(string name) : name(name), win(0), lose(0), allplays(0) { }
-    user(string name, int id_b) : id(0), name(name), win(0), lose(0), allplays(0) {
-        if (id_b != 0)
-            id = id_b + 1;
-    }
-    user(int id, string name, int win, int lose, int allp) : id(id), name(name), win(win), lose(lose), allplays(allp) {}
-    ~user() {}
-    int getId() { return id; }
-    string getName() { return name; }
-    int getWin() { return win; }
-    int getLose() { return lose; }
-    int getAllplays() { return allplays; }
-};
-
-class table_users {
-private:
-    string file_r;
-    vector<user> users;
-public:
-    table_users() {}
-    table_users(string f) : file_r(f) { 
-        readfile(); 
-    }
-    ~table_users() { 
-        rewrightFile(); 
-    }
-    void out();     //выводит данные из массива в консоль
-    void readfile();    //считывает файл в массив vector<users>
-    void newUser(string name);      //добавляет в файл/массив нового пользователя
-    bool duplicateName(string name);     //проверяет, создан ли уже такой пользователь
-    int countUsers();       //считает кол-во пользователей в массиве
-    void rewrightFile();
-};
 
 //выводит данные из массива в консоль
 void table_users::out(){
@@ -137,7 +97,7 @@ void table_users::newUser(string name) {
 }
 
 int table_users::countUsers() {
-    return users.size();
+    return static_cast<int>(users.size());
 }
 
 void table_users::rewrightFile() {
