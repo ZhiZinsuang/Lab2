@@ -89,7 +89,8 @@ bool table_users::duplicateName(string name) {
 //добавляет нового пользователя в массив
 void table_users::newUser(string name) {
     if (duplicateName(name))    //проверка на повторность имени
-        cout << "Такой пользователь уже есть" << endl;
+        //cout << "Такой пользователь уже есть" << endl;
+        throw InvalidCreateUser("Такой пользователь уже есть");
     else {
         users.push_back(user(name, countUsers()));
     }
@@ -118,8 +119,8 @@ void table_users::rewrightFile() {
 
 //возвращает пользователя с определённым индексом
 user table_users::getUser(int id) {
-    // можно исключение кинуть на несуществующего пользователя
-    return users[id - 1];
+    id--;
+    return users[id];
 }
 
 int main()
@@ -129,11 +130,15 @@ int main()
     SetConsoleOutputCP(1251);
 
     table_users n("tableUsers.txt");
-
-    n.newUser("lo");
+    
     n.out();
-    user u = n.getUser(2);
-    cout << u.getName() << endl;
+
+    try {
+        n.newUser("lo");
+    }
+    catch (InvalidCreateUser& e) {
+        cout << e.getMessage() << endl;
+    }
 
 }
 

@@ -1,8 +1,10 @@
 
 #ifndef TABLE_USERS_H
+#define TABLE_USERS_H
 
 #include <iostream>
 #include <vector>
+#include <exception>
 #include <string>
 
 using namespace std;
@@ -48,6 +50,14 @@ public:
     int countUsers();       //возвращает кол-во пользователей в массиве
     void rewrightFile();    //переписывает в файл все данные из массива
     user getUser(int id);   //возвращает пользователя с определённым индексом
+};
+
+class InvalidCreateUser : public exception {
+private:
+    string message;
+public:
+    InvalidCreateUser(const string& message) :message(message) {}
+    string getMessage() { return message; }
 };
 
 #endif 
