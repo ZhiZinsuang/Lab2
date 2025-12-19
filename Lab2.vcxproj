@@ -140,6 +140,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Lab2.cpp" />
+    <ClCompile Include="table_users.cpp" />
+    <ClCompile Include="user.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="existingUserException.h" />
+    <ClInclude Include="table_users.h" />
+    <ClInclude Include="user.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
