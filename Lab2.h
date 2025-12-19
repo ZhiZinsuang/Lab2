@@ -29,6 +29,17 @@ public:
     int getWin() { return win; }
     int getLose() { return lose; }
     int getAllplays() { return allplays; }
+    void userWin() {
+        win++;
+        allplays++;
+    }
+    void userLose() {
+        lose++;
+        allplays++;
+    }
+    void userDeadHeat() {
+        allplays++;
+    }
 };
 
 class table_users {
@@ -49,7 +60,7 @@ public:
     bool duplicateName(string name);     //проверяет, есть ли уже пользователь с таким именем
     int countUsers();       //возвращает кол-во пользователей в массиве
     void rewrightFile();    //переписывает в файл все данные из массива
-    user getUser(int id);   //возвращает пользователя с определённым индексом
+    user& getUser(int id);   //возвращает пользователя с определённым индексом
 };
 
 class InvalidCreateUser : public exception {

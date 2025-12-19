@@ -1,4 +1,5 @@
 ﻿
+/*
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -11,11 +12,13 @@ using namespace std;
 
 //выводит данные из массива в консоль
 void table_users::out(){
-    //readfile();
-    for (user p : users) {
-        cout << p.getId() << " " <<  p.getName() << " " << p.getWin() << " " << p.getLose() << " " << p.getAllplays() << endl;
+    if (users.size() == 0)
+        cout << "Данных нет" << endl;
+    else {
+        for (user p : users) {
+            cout << p.getId() << " " << p.getName() << " " << p.getWin() << " " << p.getLose() << " " << p.getAllplays() << endl;
+        }
     }
-    //users.clear();
 }
 
 //считывает файл в массив vector<users>
@@ -54,42 +57,16 @@ void table_users::readfile() {
 
 //проверяет, есть ли в файле такое имя
 bool table_users::duplicateName(string name) {
-    if (users.empty())
-        readfile();                                     //а надо ли?
-    int i = 0, flag = 1;
     for (user u : users) {
-        if (name == users[i].getName())
+        if (name == u.getName())
             return true;
-        i++;
     }
-    //users.clear();  //очищаем оперативную память от массива воизбежание ошибок
     return false;
 }
-
-//добавляет в файл нового пользователя
-/*void table_users::newUser(string name) {
-    //проверка на повторность имени
-    if (duplicateName(name))
-        cout << "Такой пользователь уже есть" << endl;
-    else {
-        ofstream out;
-        out.open(file_r, ios::app);
-        if (out.is_open())
-        {
-            user new_user(name);
-            out << new_user.getName() << " " << new_user.getWin() << " " << new_user.getLose() << " " << new_user.getAllplays() << endl;
-        }
-        else {
-            cout << "ошибка открытия файла" << endl;
-        }
-        out.close();
-    }
-}*/
 
 //добавляет нового пользователя в массив
 void table_users::newUser(string name) {
     if (duplicateName(name))    //проверка на повторность имени
-        //cout << "Такой пользователь уже есть" << endl;
         throw InvalidCreateUser("Такой пользователь уже есть");
     else {
         users.push_back(user(name, countUsers()));
@@ -118,10 +95,16 @@ void table_users::rewrightFile() {
 }
 
 //возвращает пользователя с определённым индексом
-user table_users::getUser(int id) {
-    id--;
+user& table_users::getUser(int id) {
     return users[id];
-}
+}*/
+
+#include <iostream>
+#include <Windows.h>
+
+#include "table_users.h"
+#include "user.h"
+#include "existingUserException.h"
 
 int main()
 {
@@ -129,16 +112,18 @@ int main()
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
 
-    table_users n("tableUsers.txt");
+    Table_users n("tableUsers.txt");
     
     n.out();
 
     try {
         n.newUser("lo");
     }
-    catch (InvalidCreateUser& e) {
+    catch (ExistingUserException& e) {
         cout << e.getMessage() << endl;
     }
+
+   
 
 }
 
