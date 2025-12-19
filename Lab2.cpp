@@ -16,6 +16,10 @@ int main()
     SetConsoleOutputCP(1251);
 
     Table_users n("tableUsers.txt");
+
+    User* nu = new User();
+    nu = n.getUser(1);
+    cout << nu->getName() << endl;
     
     n.out();
 
@@ -25,6 +29,6 @@ int main()
     catch (ExistingUserException& e) {
         cout << e.getMessage() << endl;
     }
-
+    delete nu;
 }
 
