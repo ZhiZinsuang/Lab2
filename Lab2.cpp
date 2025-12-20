@@ -1,11 +1,12 @@
 ﻿
 #include <iostream>
-
 #include <Windows.h>
 
 #include "existingUserException.h"
 #include "user.h"
 #include "table_users.h"
+#include "play.h"
+#include "table_plays.h"
 
 using namespace std;
 
@@ -15,7 +16,7 @@ int main()
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
 
-    Table_users n("tableUsers.txt");
+    /*Table_users n("tableUsers.txt");
     
     n.out();
 
@@ -24,7 +25,10 @@ int main()
     }
     catch (ExistingUserException& e) {
         cout << e.getMessage() << endl;
-    }
+    }*/
 
+    Table_plays b("tablePlays.txt");
+    b.newPlay("Sarina", "Goro");
+    b.outPlays();
 }
 

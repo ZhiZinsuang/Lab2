@@ -1,15 +1,1 @@
-1 loliko 23 8 35
-2 hibiki 2 0 3
-3 kolin 13 7 21
-4 kolin 13 7 21
-5 kolin 13 7 21
-6 hj 0 0 0
-7 hj 0 0 0
-8 hj 0 0 0
-9 hj 0 0 0
-10 hoo 0 0 0
-11 hoo 0 0 0
-12 hi 0 0 0
-13 hihi 0 0 0
-14 hello 0 0 0
-15 lo 0 0 0
+0 loliko 23 8 35
