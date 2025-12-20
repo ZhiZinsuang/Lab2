@@ -147,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="existingUserException.h" />
+    <ClInclude Include="falseFormatLineException.h" />
     <ClInclude Include="play.h" />
     <ClInclude Include="table_plays.h" />
     <ClInclude Include="table_users.h" />

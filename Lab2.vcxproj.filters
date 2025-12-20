@@ -47,5 +47,8 @@
     <ClInclude Include="play.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="falseFormatLineException.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

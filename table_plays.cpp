@@ -4,6 +4,7 @@
 #include <string>
 
 #include "table_plays.h"
+#include "falseFormatLineException.h"
 
 using namespace std;
 
@@ -14,7 +15,12 @@ Table_plays::~Table_plays() {
 }
 
 Table_plays::Table_plays(string f) : file_r(f) {
-    readfile();
+    try { 
+        readfile(); 
+    }
+    catch (FalseFormatLineException& e) {
+        cout << e.getMessage() << endl;
+    }
 }
 
 void Table_plays::readfile() {
@@ -22,25 +28,29 @@ void Table_plays::readfile() {
     if (!file.is_open())
         cout << "Не удалось открыть файл." << endl;
     else {
-        string line;
-        string line1, line2, line3;
-        while (getline(file, line)) {
-            int i = 0;
-            char delimiter = ' ';
-            size_t start = 0;
-            size_t end = line.find(delimiter);
-            while (end != string::npos) {
-                if (i == 0)
-                    line1 = line.substr(start, end - start);
-                else if (i == 1)
-                    line2 = line.substr(start, end - start);
-                start = end + 1;
-                end = line.find(delimiter, start);
-                i++;
-            }
-            line3 = line.substr(start);
+        try {
+            string line;
+            string line1, line2, line3;
+            while (getline(file, line)) {
+                int i = 0;
+                char delimiter = ' ';
+                size_t start = 0;
+                size_t end = line.find(delimiter);
+                while (end != string::npos) {
+                    if (i == 0)
+                        line1 = line.substr(start, end - start);
+                    else if (i == 1)
+                        line2 = line.substr(start, end - start);
+                    start = end + 1;
+                    end = line.find(delimiter, start);
+                    i++;
+                }
+                line3 = line.substr(start);
 
-            plays.push_back(Play(stoi(line1), line2, line3));
+                plays.push_back(Play(stoi(line1), line2, line3));
+            }
+        }catch (...) {
+            throw FalseFormatLineException("Строка в файле неверного формата");
         }
     }
     file.close();

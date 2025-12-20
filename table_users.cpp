@@ -5,13 +5,19 @@
 
 #include "table_users.h"
 #include "existingUserException.h"
+#include "falseFormatLineException.h"
 
 using namespace std;
 
 Table_users::Table_users() {}
 
 Table_users::Table_users(string f) : file_r(f) {
-    readfile();
+    try {
+        readfile();
+    }
+    catch (FalseFormatLineException& e) {
+        cout << e.getMessage() << endl;
+    }  
 }
 
 Table_users::~Table_users() {
@@ -35,30 +41,35 @@ void Table_users::readfile() {
     if (!file.is_open())
         cout << "Не удалось открыть файл." << endl;
     else {
-        string line;
-        string line1, line2, line3, line4, line5;
-        while (getline(file, line)) {
-            int i = 0;
-            char delimiter = ' ';
-            size_t start = 0;
-            size_t end = line.find(delimiter);
-            while (end != string::npos) {
-                if (i == 0)
-                    line1 = line.substr(start, end - start);
-                else if (i == 1)
-                    line2 = line.substr(start, end - start);
-                else if (i == 2)
-                    line3 = line.substr(start, end - start);
-                else if (i == 3)
-                    line4 = line.substr(start, end - start);
-                start = end + 1;
-                end = line.find(delimiter, start);
-                i++;
-            }
-            line5 = line.substr(start);
+        try {
+            string line;
+            string line1, line2, line3, line4, line5;
+            while (getline(file, line)) {
+                int i = 0;
+                char delimiter = ' ';
+                size_t start = 0;
+                size_t end = line.find(delimiter);
+                while (end != string::npos) {
+                    if (i == 0)
+                        line1 = line.substr(start, end - start);
+                    else if (i == 1)
+                        line2 = line.substr(start, end - start);
+                    else if (i == 2)
+                        line3 = line.substr(start, end - start);
+                    else if (i == 3)
+                        line4 = line.substr(start, end - start);
+                    start = end + 1;
+                    end = line.find(delimiter, start);
+                    i++;
+                }
+                line5 = line.substr(start);
 
-            users.push_back(User(stoi(line1), line2, stoi(line3), stoi(line4), stoi(line5)));
+                users.push_back(User(stoi(line1), line2, stoi(line3), stoi(line4), stoi(line5)));
+            }
+        }catch (...) {
+            throw FalseFormatLineException("Строка в файле неверного формата");
         }
+        
     }
     file.close();
 }
