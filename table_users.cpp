@@ -30,7 +30,7 @@ void Table_users::out() {
     if (users.size() == 0)
         cout << "File is empty" << endl;
     else {
-        for (User* p : users) {
+        for (auto& p : users) {
             cout << p->getId() << " " << p->getName() << " " << p->getWin() << " " << p->getLose() << " " << p->getAllplays() << endl;
         }
     }
@@ -65,7 +65,12 @@ void Table_users::readfile() {
                 }
                 line5 = line.substr(start);
 
-                users.push_back(new User(stoi(line1), line2, stoi(line3), stoi(line4), stoi(line5)));
+                auto user = std::make_unique<User>(
+                    stoi(line1), line2,
+                    stoi(line3), stoi(line4),
+                    stoi(line5)
+                    );
+                users.push_back(std::move(user));
             }
         }catch (...) {
             throw FalseFormatLineException("Строка в файле неверного формата");
@@ -77,7 +82,7 @@ void Table_users::readfile() {
 
 //проверяет, есть ли в файле такое имя
 bool Table_users::duplicateName(string name) {
-    for (User* u : users) {
+    for (const auto& u : users) {
         if (name == u->getName())
             return true;
     }
@@ -89,7 +94,8 @@ void Table_users::newUser(string name) {
     if (duplicateName(name))    //проверка на повторность имени
         throw ExistingUserException("User had already created");
     else {
-        users.push_back(new User(name, countUsers()));
+        auto newUser = std::make_unique<User>(name, countUsers());
+        users.push_back(std::move(newUser));
     }
 }
 
@@ -104,7 +110,7 @@ void Table_users::rewrightFile() {
     out.open(file_r);
     if (out.is_open())
     {
-        for (User* u : users) {
+        for (const auto& u : users) {
             out << u->getId() << " " << u->getName() << " " << u->getWin() << " " << u->getLose() << " " << u->getAllplays() << endl;
         }
     }
@@ -115,9 +121,12 @@ void Table_users::rewrightFile() {
 }
 
 //возвращает пользователя с определённым индексом
-User* Table_users::getUser(int id) {
+unique_ptr<User> Table_users::getUser(int id) {
     try {
-        return users[id];
+        if (id < 0 || static_cast<size_t>(id) >= users.size()) {
+            throw NonExistentUserException("Запрашивается несуществующий пользователь");
+        }
+        return std::make_unique<User>(*users[id]);
     }
     catch (...) {
         throw NonExistentUserException("Запрашивается несуществующий пользователь");

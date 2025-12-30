@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <memory>
 
 #include "user.h"
 
@@ -11,7 +12,7 @@ using namespace std;
 class Table_users {
 private:
     string file_r;
-    vector<User*> users;
+    vector<unique_ptr<User>> users;
 public:
     Table_users();
     Table_users(string f);
@@ -22,7 +23,7 @@ public:
     bool duplicateName(string name);     //проверяет, есть ли уже пользователь с таким именем
     int countUsers();       //возвращает кол-во пользователей в массиве
     void rewrightFile();    //переписывает в файл все данные из массива
-    User* getUser(int id);   //возвращает пользователя с определённым индексом
+    unique_ptr<User> getUser(int id);   //возвращает пользователя с определённым индексом
 };
 
 #endif
