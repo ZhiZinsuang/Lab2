@@ -83,17 +83,17 @@ void testIntegration() {
 
         // Обновляем статистику пользователей
         cout << "\nОбновляем статистику...\n";
-        User& alice = users.getUser(0);
-        User& bob = users.getUser(1);
+        User* alice = users.getUser(0);
+        User* bob = users.getUser(1);
 
         // Alice выиграла у Bob
-        alice.userWin();
-        bob.userLose();
+        alice->userWin();
+        bob->userLose();
 
-        cout << "Alice: W=" << alice.getWin() << " L=" << alice.getLose()
-            << " Total=" << alice.getAllplays() << endl;
-        cout << "Bob: W=" << bob.getWin() << " L=" << bob.getLose()
-            << " Total=" << bob.getAllplays() << endl;
+        cout << "Alice: W=" << alice->getWin() << " L=" << alice->getLose()
+            << " Total=" << alice->getAllplays() << endl;
+        cout << "Bob: W=" << bob->getWin() << " L=" << bob->getLose()
+            << " Total=" << bob->getAllplays() << endl;
 
     }
     catch (...) {
@@ -107,7 +107,7 @@ int main()
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
 
-    Table_users n("tableUsers.txt");
+    /*Table_users n("tableUsers.txt");
     
     n.out();
 
@@ -117,13 +117,13 @@ int main()
     catch (ExistingUserException& e) {
         cout << e.getMessage() << endl;
     }
-    n.out();
+    n.out();*/
 
     /*Table_plays b("tablePlays.txt");
     b.newPlay("Sarina", "Goro");
     b.outPlays();*/
 
-    /*cout << "=== ТЕСТИРОВАНИЕ СИСТЕМЫ ПОЛЬЗОВАТЕЛЕЙ И ПАРТИЙ ===\n\n";
+    cout << "=== ТЕСТИРОВАНИЕ СИСТЕМЫ ПОЛЬЗОВАТЕЛЕЙ И ПАРТИЙ ===\n\n";
 
     testUsers();
     cout << "\n" << string(50, '=') << "\n\n";
@@ -133,7 +133,7 @@ int main()
 
     testIntegration();
 
-    cout << "\n=== ВСЕ ТЕСТЫ ЗАВЕРШЕНЫ ===\n";*/
+    cout << "\n=== ВСЕ ТЕСТЫ ЗАВЕРШЕНЫ ===\n";
     
 }
 

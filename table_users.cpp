@@ -30,8 +30,8 @@ void Table_users::out() {
     if (users.size() == 0)
         cout << "File is empty" << endl;
     else {
-        for (User p : users) {
-            cout << p.getId() << " " << p.getName() << " " << p.getWin() << " " << p.getLose() << " " << p.getAllplays() << endl;
+        for (User* p : users) {
+            cout << p->getId() << " " << p->getName() << " " << p->getWin() << " " << p->getLose() << " " << p->getAllplays() << endl;
         }
     }
 }
@@ -65,7 +65,7 @@ void Table_users::readfile() {
                 }
                 line5 = line.substr(start);
 
-                users.push_back(User(stoi(line1), line2, stoi(line3), stoi(line4), stoi(line5)));
+                users.push_back(new User(stoi(line1), line2, stoi(line3), stoi(line4), stoi(line5)));
             }
         }catch (...) {
             throw FalseFormatLineException("Строка в файле неверного формата");
@@ -77,8 +77,8 @@ void Table_users::readfile() {
 
 //проверяет, есть ли в файле такое имя
 bool Table_users::duplicateName(string name) {
-    for (User u : users) {
-        if (name == u.getName())
+    for (User* u : users) {
+        if (name == u->getName())
             return true;
     }
     return false;
@@ -89,7 +89,7 @@ void Table_users::newUser(string name) {
     if (duplicateName(name))    //проверка на повторность имени
         throw ExistingUserException("User had already created");
     else {
-        users.push_back(User(name, countUsers()));
+        users.push_back(new User(name, countUsers()));
     }
 }
 
@@ -104,8 +104,8 @@ void Table_users::rewrightFile() {
     out.open(file_r);
     if (out.is_open())
     {
-        for (User u : users) {
-            out << u.getId() << " " << u.getName() << " " << u.getWin() << " " << u.getLose() << " " << u.getAllplays() << endl;
+        for (User* u : users) {
+            out << u->getId() << " " << u->getName() << " " << u->getWin() << " " << u->getLose() << " " << u->getAllplays() << endl;
         }
     }
     else {
@@ -115,7 +115,7 @@ void Table_users::rewrightFile() {
 }
 
 //возвращает пользователя с определённым индексом
-User& Table_users::getUser(int id) {
+User* Table_users::getUser(int id) {
     try {
         return users[id];
     }
