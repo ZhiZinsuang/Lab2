@@ -8,7 +8,8 @@ User::User() : id(0), name("player"), win(0), lose(0), allplays(0) {}
 
 User::User(string name, int id_b) : id(0), name(name), win(0), lose(0), allplays(0) {
     if (id_b != 0)
-        id = id_b + 1;
+        id = id_b;
+    //cout << "count = " << id_b << endl;
 }
 
 User::User(int id, string name, int win, int lose, int allp) : id(id), name(name), win(win), lose(lose), allplays(allp) {}

@@ -6,6 +6,7 @@
 #include "table_users.h"
 #include "existingUserException.h"
 #include "falseFormatLineException.h"
+#include "nonExistentUserException.h"
 
 using namespace std;
 
@@ -27,7 +28,7 @@ Table_users::~Table_users() {
 //выводит данные из массива в консоль
 void Table_users::out() {
     if (users.size() == 0)
-        cout << "Данных нет" << endl;
+        cout << "File is empty" << endl;
     else {
         for (User p : users) {
             cout << p.getId() << " " << p.getName() << " " << p.getWin() << " " << p.getLose() << " " << p.getAllplays() << endl;
@@ -115,5 +116,11 @@ void Table_users::rewrightFile() {
 
 //возвращает пользователя с определённым индексом
 User& Table_users::getUser(int id) {
-    return users[id];
+    try {
+        return users[id];
+    }
+    catch (...) {
+        throw NonExistentUserException("Запрашивается несуществующий пользователь");
+    }
+    
 }

@@ -50,5 +50,8 @@
     <ClInclude Include="falseFormatLineException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="nonExistentUserException.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
