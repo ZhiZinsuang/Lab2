@@ -2,15 +2,13 @@
 #define FALSE_FORMAT_LINE_EXEPTION
 
 #include <iostream>
+#include "baseException.h"
 
 using namespace std;
 
-class FalseFormatLineException {
-private:
-    std::string message;
+class FalseFormatLineException : public BaseException {
 public:
-    FalseFormatLineException(const std::string& message) :message(message) {}
-    std::string getMessage() { return message; }
+    FalseFormatLineException(const std::string& message) : BaseException(message) {}
 };
 
 #endif // !FALSE_FORMAT_LINE_EXEPTION

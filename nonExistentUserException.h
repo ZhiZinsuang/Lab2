@@ -2,15 +2,13 @@
 #define NON_EXISTENT_USER_EXEPTION_H
 
 #include <iostream>
+#include "baseException.h"
 
 using namespace std;
 
-class NonExistentUserException {
-private:
-    std::string message;
+class NonExistentUserException : public BaseException {
 public:
-    NonExistentUserException(const std::string& message) :message(message) {}
-    std::string getMessage() { return message; }
+    NonExistentUserException(const std::string& message) : BaseException(message) {}
 };
 
 
