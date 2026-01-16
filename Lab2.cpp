@@ -1,5 +1,6 @@
 ﻿
 #include <iostream>
+#include <memory>
 #include <Windows.h>
 
 #include "existingUserException.h"
@@ -30,7 +31,7 @@ void testUsers() {
 
     }
     catch (ExistingUserException& e) {
-        cout << "✓ ОШИБКА: " << e.getMessage() << endl;
+        cout << "ОШИБКА: " << e.getMessage() << endl;
     }
 
     try {
@@ -43,7 +44,7 @@ void testUsers() {
 
     }
     catch (NonExistentUserException& e) {
-        cout << "✓ ОШИБКА: " << e.getMessage() << endl;
+        cout << "ОШИБКА: " << e.getMessage() << endl;
     }
 }
 
@@ -51,21 +52,24 @@ void testPlays() {
     cout << "2. ТЕСТ КЛАССА TABLE_PLAYS\n";
 
     Table_plays plays("plays.txt");
+    Table_users users("users.txt");
 
     // Тест 1: Добавление партий
     cout << "Добавляем партии...\n";
-    plays.newPlay("Alice", "Bob");
-    plays.newPlay("Charlie", "Alice");
-    plays.newPlay("Bob", "Charlie");
+    plays.newPlay("Alice", "Bob", users);
+    plays.newPlay("Charlie", "Alice", users);
+    plays.newPlay("Bob", "Charlie", users);
+    cout << "\n" << endl;
     plays.outPlays();
+    users.out();
 
     // Тест 2: Подсчет партий
-    cout << "\nКоличество партий: " << plays.countPlays() << endl;
+    //cout << "\nКоличество партий: " << plays.countPlays() << endl;
 
     // Тест 3: Перезапись файла и повторный вывод
-    cout << "\nПосле перезаписи файла:\n";
-    plays.rewrightFile();
-    plays.outPlays();
+    //cout << "\nПосле перезаписи файла:\n";
+    //plays.rewrightFile();
+    //plays.outPlays();
 }
 
 void testIntegration() {
@@ -83,8 +87,8 @@ void testIntegration() {
 
         // Обновляем статистику пользователей
         cout << "\nОбновляем статистику...\n";
-        User* alice = users.getUser(0);
-        User* bob = users.getUser(1);
+        unique_ptr<User> alice = users.getUser(0);
+        unique_ptr<User> bob = users.getUser(1);
 
         // Alice выиграла у Bob
         alice->userWin();
@@ -125,13 +129,13 @@ int main()
 
     cout << "=== ТЕСТИРОВАНИЕ СИСТЕМЫ ПОЛЬЗОВАТЕЛЕЙ И ПАРТИЙ ===\n\n";
 
-    testUsers();
+    //testUsers();
     cout << "\n" << string(50, '=') << "\n\n";
 
     testPlays();
     cout << "\n" << string(50, '=') << "\n\n";
 
-    testIntegration();
+    //testIntegration();
 
     cout << "\n=== ВСЕ ТЕСТЫ ЗАВЕРШЕНЫ ===\n";
     

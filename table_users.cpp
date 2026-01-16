@@ -94,8 +94,8 @@ void Table_users::newUser(string name) {
     if (duplicateName(name))    //проверка на повторность имени
         throw ExistingUserException("User had already created");
     else {
-        auto newUser = std::make_unique<User>(name, countUsers());
-        users.push_back(std::move(newUser));
+        auto newUser = make_unique<User>(name, countUsers());
+        users.push_back(move(newUser));
     }
 }
 

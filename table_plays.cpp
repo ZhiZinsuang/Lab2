@@ -1,10 +1,12 @@
 #include <iostream>
+#include <memory>
 #include <vector>
 #include <fstream>
 #include <string>
 
 #include "table_plays.h"
 #include "falseFormatLineException.h"
+#include "nonExistentUserException.h"
 
 using namespace std;
 
@@ -85,7 +87,34 @@ int Table_plays::countPlays() {
     return static_cast<int>(plays.size());
 }
 
-void Table_plays::newPlay(string uWin, string uLose) {
-    int id = countPlays();
-    plays.push_back(Play(id, uWin, uLose));
-}
+ shared_ptr<User> Table_plays::getUserByName(Table_users& usersTable, string& name) const {
+     for (int i = 0; i < usersTable.countUsers(); ++i) {
+         auto user = usersTable.getUser(i);
+         if (user->getName() == name) {
+             return user;  // Возвращаем найденного пользователя
+         }
+     }
+     throw NonExistentUserException("Пользователь '" + name + "' не найден");
+ }
+
+ void Table_plays::newPlay(string uWin, string uLose, Table_users& usersTable) {
+     int id = countPlays();
+     plays.emplace_back(id, uWin, uLose);  // Добавляем игру
+
+     try {
+         // Находим победителя и обновляем статистику
+         //const auto& user1 = getUserByName(usersTable, uWin);  // Ссылка на возвращаемый shared_ptr
+         //user1->userWin();
+         auto user1 = getUserByName(usersTable, uWin);  // Ссылка на возвращаемый shared_ptr
+         user1->userWin();
+
+         // Находим проигравшего и обновляем статистику  
+         //const auto& user2 = getUserByName(usersTable, uLose);
+         //user2->userLose(); // userLose() вызывается на КОПИИ!
+     }
+     catch (NonExistentUserException& e) {
+         cout << "Ошибка: " << e.getMessage() << endl;
+         // Откатываем добавление игры при ошибке
+         plays.pop_back();
+     }
+ }
