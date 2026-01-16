@@ -1,146 +1,81 @@
-﻿
+﻿// main.cpp (пример использования)
 #include <iostream>
 #include <memory>
-#include <Windows.h>
-
+#include "table_users.h"
+#include "table_plays.h"
 #include "existingUserException.h"
 #include "nonExistentUserException.h"
-#include "user.h"
-#include "table_users.h"
-#include "play.h"
-#include "table_plays.h"
 
 using namespace std;
 
-void testUsers() {
-    cout << "1. ТЕСТ КЛАССА USER и TABLE_USERS\n";
-
+int main() {
     try {
+        // Пример работы с умными указателями
+        {
+            auto userPtr = make_shared<User>("John", 1);
+            cout << *userPtr << endl;
+
+            auto playPtr = make_unique<Play>(1, "John", "Alice");
+            cout << *playPtr << endl;
+        }
+
+        // Пример работы с Table_users
         Table_users users("users.txt");
 
-        // Тест 1: Добавление новых пользователей
-        cout << "Добавляем пользователей...\n";
+        // Добавление пользователей
         users.newUser("Alice");
         users.newUser("Bob");
-        users.newUser("Charlie");
-        users.out();
+        users.newAdvancedUser("Charlie", "Admin");
 
-        // Тест 2: Попытка дубликата
-        cout << "\nПопытка добавить дубликат:\n";
-        users.newUser("Alice");  // Должно выбросить исключение
+        // Поиск пользователя
+        User* foundUser = users.findUserByName("alice"); // регистронезависимый поиск
+        if (foundUser) {
+            cout << "Found: " << *foundUser << endl;
+        }
+
+        // Использование перегруженных операторов
+        cout << users << endl;
+
+        // Пример работы с Table_plays
+        Table_plays plays("plays.txt");
+        plays.newPlay("Alice", "Bob");
+        plays.newPlay("Charlie", "Alice");
+
+        // Поиск игр по игроку
+        auto alicePlays = plays.findPlaysByPlayer("Alice");
+        cout << "Alice's plays: " << alicePlays.size() << endl;
+
+        // Использование перегруженных операторов
+        cout << plays << endl;
+
+        // Пример конкатенации строк
+        if (!alicePlays.empty()) {
+            cout << combinePlayInfo(*alicePlays[0]) << endl;
+        }
+
+        // Пример форматированного вывода
+        if (foundUser) {
+            cout << formatUserStats(*foundUser) << endl;
+        }
+
+        // Пример работы с конструктором копирования
+        Table_users usersCopy(users);
+        cout << "Copied table has " << usersCopy.countUsers() << " users" << endl;
+
+        // Пример работы с наследованием
+        AdvancedUser admin("Admin", 99, "SuperAdmin");
+        cout << admin.getType() << endl;
 
     }
     catch (ExistingUserException& e) {
-        cout << "ОШИБКА: " << e.getMessage() << endl;
-    }
-
-    try {
-        Table_users users("users.txt");
-        users.out();
-
-        // Тест 3: Получение несуществующего пользователя
-        cout << "\nПопытка получить несуществующего пользователя:\n";
-        //User& u = users.getUser(10);  // Должно выбросить исключение
-
+        cerr << "Error: " << e.getMessage() << endl;
     }
     catch (NonExistentUserException& e) {
-        cout << "ОШИБКА: " << e.getMessage() << endl;
+        cerr << "Error: " << e.getMessage() << endl;
     }
+    catch (const exception& e) {
+        cerr << "Unexpected error: " << e.what() << endl;
+    }
+
+    return 0;
 }
-
-void testPlays() {
-    cout << "2. ТЕСТ КЛАССА TABLE_PLAYS\n";
-
-    Table_plays plays("plays.txt");
-    Table_users users("users.txt");
-
-    // Тест 1: Добавление партий
-    cout << "Добавляем партии...\n";
-    plays.newPlay("Alice", "Bob", users);
-    plays.newPlay("Charlie", "Alice", users);
-    plays.newPlay("Bob", "Charlie", users);
-    cout << "\n" << endl;
-    plays.outPlays();
-    users.out();
-
-    // Тест 2: Подсчет партий
-    //cout << "\nКоличество партий: " << plays.countPlays() << endl;
-
-    // Тест 3: Перезапись файла и повторный вывод
-    //cout << "\nПосле перезаписи файла:\n";
-    //plays.rewrightFile();
-    //plays.outPlays();
-}
-
-void testIntegration() {
-    cout << "3. ИНТЕГРАЦИОННЫЙ ТЕСТ\n";
-
-    try {
-        Table_users users("users.txt");
-        Table_plays plays("plays.txt");
-
-        cout << "Пользователи:\n";
-        users.out();
-
-        cout << "\nПартии:\n";
-        plays.outPlays();
-
-        // Обновляем статистику пользователей
-        cout << "\nОбновляем статистику...\n";
-        unique_ptr<User> alice = users.getUser(0);
-        unique_ptr<User> bob = users.getUser(1);
-
-        // Alice выиграла у Bob
-        alice->userWin();
-        bob->userLose();
-
-        cout << "Alice: W=" << alice->getWin() << " L=" << alice->getLose()
-            << " Total=" << alice->getAllplays() << endl;
-        cout << "Bob: W=" << bob->getWin() << " L=" << bob->getLose()
-            << " Total=" << bob->getAllplays() << endl;
-
-    }
-    catch (...) {
-        ;// cout << "ОШИБКА: " << e.getMessage() << endl;
-    }
-}
-
-int main()
-{
-    setlocale(LC_ALL, "Russian");
-    SetConsoleCP(1251);
-    SetConsoleOutputCP(1251);
-
-    /*Table_users n("tableUsers.txt");
-    
-    n.out();
-
-    try {
-        n.newUser("ho");
-    }
-    catch (ExistingUserException& e) {
-        cout << e.getMessage() << endl;
-    }
-    n.out();*/
-
-    /*Table_plays b("tablePlays.txt");
-    b.newPlay("Sarina", "Goro");
-    b.outPlays();*/
-
-    cout << "=== ТЕСТИРОВАНИЕ СИСТЕМЫ ПОЛЬЗОВАТЕЛЕЙ И ПАРТИЙ ===\n\n";
-
-    //testUsers();
-    cout << "\n" << string(50, '=') << "\n\n";
-
-    testPlays();
-    cout << "\n" << string(50, '=') << "\n\n";
-
-    //testIntegration();
-
-    cout << "\n=== ВСЕ ТЕСТЫ ЗАВЕРШЕНЫ ===\n";
-    
-}
-
-
-
-
