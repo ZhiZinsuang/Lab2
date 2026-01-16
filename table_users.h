@@ -1,4 +1,4 @@
-// table_users.h
+
 #ifndef TABLE_USERS_H
 #define TABLE_USERS_H
 

@@ -1,30 +1,26 @@
-// user.cpp
+
 #include <iostream>
 #include <sstream>
 #include "user.h"
 
 using namespace std;
 
-User::User() : id(0), name("player"), win(0), lose(0), allplays(0) {}
+User::User() : PlayerBase("player"), id(0), win(0), lose(0), allplays(0) {}
 
 User::User(const string& name, int id_b)
-    : id(id_b), name(name), win(0), lose(0), allplays(0) {}
+    : PlayerBase(name), id(id_b), win(0), lose(0), allplays(0) {}
 
 User::User(int id, const string& name, int win, int lose, int allp)
-    : id(id), name(name), win(win), lose(lose), allplays(allp) {}
+    : PlayerBase(name), id(id), win(win), lose(lose), allplays(allp) {}
 
 User::User(const User& other)
-    : id(other.id), name(other.name), win(other.win),
+    : PlayerBase(other.name), id(other.id), win(other.win),
     lose(other.lose), allplays(other.allplays) {}
 
 User::~User() {}
 
 int User::getId() const {
     return id;
-}
-
-string User::getName() const {
-    return name;
 }
 
 int User::getWin() const {
@@ -55,8 +51,9 @@ void User::userDeadHeat() {
 
 User& User::operator=(const User& other) {
     if (this != &other) {
+        // Копируем имя из базового класса
+        name = other.name; // name наследуется из PlayerBase
         id = other.id;
-        name = other.name;
         win = other.win;
         lose = other.lose;
         allplays = other.allplays;
@@ -65,14 +62,13 @@ User& User::operator=(const User& other) {
 }
 
 bool User::operator==(const User& other) const {
-    return id == other.id && name == other.name;
+    return id == other.id && name == other.name; // name из PlayerBase
 }
 
 bool User::operator!=(const User& other) const {
     return !(*this == other);
 }
 
-// Объединение статистики двух пользователей (только статистики, не имен)
 User User::operator+(const User& other) const {
     return User(id, name,
         win + other.win,
@@ -82,7 +78,7 @@ User User::operator+(const User& other) const {
 
 ostream& operator<<(ostream& os, const User& user) {
     os << "User ID: " << user.id
-        << ", Name: " << user.name
+        << ", Name: " << user.name  // name доступен, так как operator<< дружественный
         << ", Wins: " << user.win
         << ", Losses: " << user.lose
         << ", Total plays: " << user.allplays;
@@ -91,7 +87,7 @@ ostream& operator<<(ostream& os, const User& user) {
 
 string formatUserStats(const User& user) {
     stringstream ss;
-    ss << "Player: " << user.name
+    ss << "Player: " << user.name  // name доступен, так как функция дружественная
         << " (ID: " << user.id << ")\n"
         << "Wins: " << user.win << " | "
         << "Losses: " << user.lose << " | "
@@ -105,18 +101,15 @@ string formatUserStats(const User& user) {
 // Реализация класса AdvancedUser
 AdvancedUser::AdvancedUser(const string& name, int id_b, const string& role)
     : User(name, id_b), role(role) {
-    // Вызов конструктора базового класса уже выполнен в списке инициализации
+    // Вызов конструктора базового класса User выполняется в списке инициализации
+    // который в свою очередь вызывает конструктор PlayerBase
 }
 
 AdvancedUser::AdvancedUser(const AdvancedUser& other)
     : User(other), role(other.role) {
-    // Копирование данных базового класса и дочернего
+    // Копирование данных базового класса User и дочернего
 }
 
 string AdvancedUser::getRole() const {
     return role;
-}
-
-string AdvancedUser::getType() const {
-    return "Advanced User (" + role + ")";
 }
