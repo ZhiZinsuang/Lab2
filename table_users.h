@@ -1,29 +1,43 @@
+// table_users.h
 #ifndef TABLE_USERS_H
 #define TABLE_USERS_H
 
 #include <iostream>
 #include <vector>
 #include <memory>
-
+#include <string>
 #include "user.h"
-
-using namespace std;
 
 class Table_users {
 private:
-    string file_r;
-    vector<unique_ptr<User>> users;
+    std::string file_r;
+    std::vector<std::unique_ptr<User>> users; // Используем unique_ptr
 public:
     Table_users();
-    Table_users(string f);
+    Table_users(const std::string& f);
+    Table_users(const Table_users& other); // Конструктор копирования
     ~Table_users();
-    void out();     //вывод из массива в консоль
-    void readfile();    //чтение данных из файла в vector<users>
-    void newUser(string name);      //записывает нового пользователя в массив
-    bool duplicateName(string name);     //проверяет, есть ли уже пользователь с таким именем
-    int countUsers();       //возвращает кол-во пользователей в массиве
-    void rewrightFile();    //переписывает в файл все данные из массива
-    unique_ptr<User> getUser(int id);   //возвращает пользователя с определённым индексом
+
+    void out() const;
+    void readfile();
+    void newUser(const std::string& name);
+    bool duplicateName(const std::string& name) const;
+    int countUsers() const;
+    void rewrightFile();
+    User& getUser(int id);
+    const User& getUser(int id) const;
+
+    // Перегрузка операторов
+    Table_users& operator=(const Table_users& other);
+    User* operator[](size_t index);
+    const User* operator[](size_t index) const;
+    friend std::ostream& operator<<(std::ostream& os, const Table_users& table);
+
+    // Поиск пользователя по имени (регистронезависимый)
+    User* findUserByName(const std::string& name) const;
+
+    // Добавление AdvancedUser
+    void newAdvancedUser(const std::string& name, const std::string& role);
 };
 
 #endif
